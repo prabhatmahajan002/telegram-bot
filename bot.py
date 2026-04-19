@@ -1,13 +1,12 @@
+import os
 import requests
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from datetime import time
 import pytz
 
-# 🔑 REPLACE THESE
-import os
-BOT_TOKEN = os.environ.get("8705367880:AAHidnfXwi5y2KwZ68jg9lrXMPl3oNFZKbY")
-API_KEY = os.environ.get("29a0cad8414f4c329e6ba1a05801f3b1")
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+API_KEY = os.environ.get("API_KEY")
 CHAT_ID = -1003924481330
 
 # 🕐 Set your timezone (IST for India)
