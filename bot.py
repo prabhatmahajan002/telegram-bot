@@ -98,7 +98,7 @@ app.post_init = on_startup
 job_queue = app.job_queue
 
 # ⏰ Schedule with IST timezone
-scheduled_times = ["06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "14:00", "18:00", "20:00", "22:00"]
+scheduled_times = ["06:00", "07:00", "08:00", "8:15", "8:30", "09:00", "10:00", "11:00", "12:00", "14:00", "18:00", "20:00", "22:00"]
 
 for t in scheduled_times:
     hour, minute = map(int, t.split(":"))
