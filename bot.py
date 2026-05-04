@@ -27,15 +27,19 @@ def get_weather(lat, lon):
         url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&units=metric"
         res = requests.get(url).json()
         if "main" not in res:
-            return None, None, None, None
+            return None, None, None, None, None
         wind_ms = res["wind"]["speed"]
         wind_kmh = round(wind_ms * 3.6, 2)  # ✅ convert m/s to km/h
         temp = res["main"]["temp"]
         humidity = res["main"]["humidity"]
         weather_desc = res["weather"][0]["description"]
-        return wind_kmh, temp, humidity, weather_desc
+        
+        # 🌧️ Extract rain data (last 1 hour in mm)
+        rain_1h = res.get("rain", {}).get("1h", 0)
+        
+        return wind_kmh, temp, humidity, weather_desc, rain_1h
     except:
-        return None, None, None, None
+        return None, None, None, None, None
 
 
 # 🧠 Safety logic
@@ -54,7 +58,7 @@ def get_status(wind, humidity):
 def generate_report():
     message = "🚢 *Marine Multi-Location Safety Report*\n\n"
     for loc in locations:
-        wind, temp, humidity, desc = get_weather(loc["lat"], loc["lon"])
+        wind, temp, humidity, desc, rain = get_weather(loc["lat"], loc["lon"])
         message += f"📍 *{loc['name']}*\n"
         if wind is None:
             message += "❌ Data unavailable\n\n"
@@ -64,6 +68,13 @@ def generate_report():
         message += f"🌡 Temp: {temp} °C\n"
         message += f"💧 Humidity: {humidity}%\n"
         message += f"🌤 Condition: {desc}\n"
+        
+        # 🌧️ Add rain information
+        if rain > 0:
+            message += f"🌧️ Rain: {rain} mm/h\n"
+        else:
+            message += f"🌧️ Rain: No rain\n"
+        
         message += f"{status}\n\n"
     return message
 
